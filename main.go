@@ -1,7 +1,7 @@
 package main
 
 import (
-    "github.com/jojoarianto/p1/interfaces"
+    "github.com/jojoarianto/go-chat-app-websocket/interfaces"
 )
 
 func main() {

@@ -5,16 +5,6 @@ import (
 	"net/http"
 )
 
-// userRequest format object
-type userRequest struct {
-	ContentMessage string `json:"content_message"`
-}
-
-type userRespond struct {
-	Status int    `json:"status"`
-	Msg    string `json:"msg"`
-}
-
 // method to print error output for http respon
 func respondWithError(w http.ResponseWriter, code int, msg string) {
 	respondWithJson(w, code, map[string]string{"error": msg})

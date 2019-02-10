@@ -6,15 +6,18 @@ import (
 	"log"
 	"net/http"
 
-    "github.com/jojoarianto/p1/domain"
+    "github.com/jojoarianto/go-chat-app-websocket/domain"
 	"github.com/julienschmidt/httprouter"
 )
 
-// sentCollectionMsg is collection of sent message
+// sentCollectionMsg collection of sent out message
 var sentCollectionMsg []domain.Message
 
 // Run start server
 func Run(port int) error {
+	// Start websocket listening for incoming chat messages
+	go handleMessages()
+	
 	log.Printf("Server running at http://localhost:%d/", port)
 	return http.ListenAndServe(fmt.Sprintf(":%d", port), Routes())
 }
@@ -26,12 +29,13 @@ func Routes() *httprouter.Router {
 	r.GET("/", index)
 	r.GET("/sent", getSentMessage)
 	r.POST("/sent", sentMessage)
+	r.GET("/ws", handleConnections)
 
 	return r
 }
 
 func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	respondWithJson(w, http.StatusOK, "GO CHAT API")
+	respondWithJson(w, http.StatusOK, "WELCOME TO GO CHAT API")
 }
 
 func getSentMessage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -39,7 +43,10 @@ func getSentMessage(w http.ResponseWriter, r *http.Request, _ httprouter.Params)
 }
 
 func sentMessage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	var ureq userRequest // catch user request 
+	type userRequest struct {
+		ContentMessage string `json:"content_message"`
+	}
+	var ureq userRequest // catch user request
 
 	// convert json to object
 	decoder := json.NewDecoder(r.Body)
@@ -49,9 +56,10 @@ func sentMessage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 	defer r.Body.Close()
 
-	// create msg object by with content msg
-	msg := domain.NewMessage(ureq.ContentMessage)
+	// Send received message to the broadcast channel
+	broadcast <- domain.NewMessage(ureq.ContentMessage)
 
+	msg := domain.NewMessage(ureq.ContentMessage)
 	sentCollectionMsg = append(sentCollectionMsg, msg)
 	respondWithJson(w, http.StatusOK, msg)
 }

@@ -8,7 +8,7 @@ type Message struct {
 	CreatedAt      time.Time `json:"created_at"`
 }
 
-// NewMessage constructor and set default value
+// NewMessage constructor to set default value
 func NewMessage(msg string) Message {
 	return Message{
 		Sender:         "unknown",

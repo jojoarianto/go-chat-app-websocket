@@ -7,11 +7,8 @@ Simple chat app using gorilla websocket websocket
 ## Goal
 
 - [X] [API for sending a message](#api-endpoint-for-sending-a-message)
-- [X] API for collect message that has been sent out
-- [X] API for display message in real time
-- [X] Create a static page to run Websocket
-- [ ] Create a unit testing
-
+- [X] [API for collect message that has been sent out](#api-for-collect-message-that-has-been-sent-out)
+- [X] [API for display message in real time](#display-message-on-websocket-realtime)
 
 ## Installation & Run
 

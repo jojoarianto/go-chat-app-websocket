@@ -1,13 +1,13 @@
 # Chat APP
 
-Simple chat app using gorilla websocket websocket
+Simple chat app using gorilla websocket
 
 > Demo [screenshot app](#demo-screenshot) 
 
 ## Goal
 
 - [X] [API for sending a message](#api-endpoint-for-sending-a-message)
-- [X] [API for collect message that has been sent out](#api-for-collect-message-that-has-been-sent-out)
+- [X] [API for collect message that has been sent out](#api-endpoint-for-collect-message-that-has-been-sent-out)
 - [X] [API for display message in real time](#display-message-on-websocket-realtime)
 
 ## Installation & Run
@@ -21,7 +21,7 @@ go get github.com/jojoarianto/go-chat-app-websocket
 # It's take several minute to download project
 ```
 
-Set project environment and run
+Run
 
 ```bash
 # move to project directory
@@ -91,7 +91,7 @@ curl --request POST \
 }
 ```
 
-### API for collect message that has been sent out
+### API endpoint for collect message that has been sent out
 
 > `GET` localhost:8000/sent
 

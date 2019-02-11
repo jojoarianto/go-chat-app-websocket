@@ -12,10 +12,14 @@ import (
 
 // sentCollectionMsg is collection of sent message
 var sentCollectionMsg []domain.Message
+// userRequest struct for user request
+type userRequest struct {
+	ContentMessage string `json:"content_message"`
+}
 
 // Run start server
 func Run(port int) error {
-	// Start websocket listening for incoming chat messages
+	// Start listening for incoming chat messages
 	go handleMessages()
 	
 	log.Printf("Server running at http://localhost:%d/", port)
@@ -43,10 +47,6 @@ func getSentMessage(w http.ResponseWriter, r *http.Request, _ httprouter.Params)
 }
 
 func sentMessage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	// userRequest format object
-	type userRequest struct {
-		ContentMessage string `json:"content_message"`
-	}
 	var ureq userRequest // catch user request
 
 	// convert json to object
@@ -57,7 +57,7 @@ func sentMessage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 	defer r.Body.Close()
 
-	// Send  received message to the broadcast channel
+	// Send message to the broadcast channel
 	broadcast <- domain.NewMessage(ureq.ContentMessage)
 
 	msg := domain.NewMessage(ureq.ContentMessage)

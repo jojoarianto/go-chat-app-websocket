@@ -6,7 +6,7 @@ Simple chat app using gorilla websocket websocket
 
 ## Goal
 
-- [X] API for sending a message
+- [X] [API for sending a message](#api-endpoint-for-sending-a-message)
 - [X] API for collect message that has been sent out
 - [X] API for display message in real time
 - [X] Create a static page to run Websocket
@@ -66,16 +66,14 @@ type Message struct {
 
 > `POST` localhost:8000/sent
 
-#### request
-
-Json 
+#### Request with data json 
 ```json
-    {
-        "content_message": "Hi Chat App"
-    }
+{
+    "content_message": "Hi Chat App"
+}
 ```
 
-or using Curl
+or using curl
 
 ```bash
 curl --request POST \
@@ -86,14 +84,56 @@ curl --request POST \
     }'
 ```
 
+#### Respond
+```json
+{
+  "id": "bhgi9mml0s15jsg5c260",
+  "sender": "Anonim",
+  "content_message": "Hi Chat App",
+  "created_at": "2019-02-11T14:31:38.711328+07:00"
+}
+```
+
 ### API for collect message that has been sent out
+
+> `GET` localhost:8000/sent
+
+#### Request with hit http://localhost:8000/sent
+
+or using curl
 
 ```bash
 curl --request GET \
   --url http://localhost:8000/sent
 ```
+#### Respond
+
+```json
+[
+  ...
+  {
+    "id": "bhgibael0s15jsg5c27g",
+    "sender": "Anonim",
+    "content_message": "Ada apa",
+    "created_at": "2019-02-11T14:35:05.886498+07:00"
+  },
+  {
+    "id": "bhgibcml0s15jsg5c28g",
+    "sender": "Anonim",
+    "content_message": "tidak ada apa apa",
+    "created_at": "2019-02-11T14:35:14.373446+07:00"
+  }
+  ...
+]
+```
 
 ### Display Message on Websocket (Realtime)
+
+> `Websocket` ws://localhost:8000/ws
+
+#### Open on browser http://localhost:8000
+
+or using curl
 
 ```bash
 curl --include \
@@ -112,7 +152,7 @@ curl --include \
 - HttpRouter from https://github.com/julienschmidt/httprouter
 - Globally Unique ID Generator from https://github.com/rs/xid
 
-### Demo Screenshot
+## Demo Screenshot
 
 ![demo-png](https://user-images.githubusercontent.com/5858756/52549176-79d10880-2e04-11e9-9c09-902bf5db00bb.png)
 

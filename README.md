@@ -144,10 +144,21 @@ curl --include \
      http://localhost:8000/ws
 ```
 
+## Unit Test
+
+```bash
+# move to interfaces folder
+cd $GOPATH/src/github.com/jojoarianto/go-chat-app-websocket/interfaces
+
+# run golang test
+go test -V
+```
+
 ## Libraries
 - Gorilla Websocket from https://github.com/gorilla/websocket
 - HttpRouter from https://github.com/julienschmidt/httprouter
 - Globally Unique ID Generator from https://github.com/rs/xid
+- End-to-end HTTP and REST API testing from https://github.com/gavv/httpexpect
 
 ## Demo Screenshot
 

@@ -8,12 +8,13 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/julienschmidt/httprouter"
 	"github.com/jojoarianto/go-chat-app-websocket/domain"
+	"github.com/rs/xid"
 )
 
 // initialize the upgrader
 var upgrader = websocket.Upgrader{}
 // collection of connected clients
-var clients = make(map[*websocket.Conn] bool) 
+var clients = make(map[*websocket.Conn] xid.ID) 
 // broadcast channel
 var broadcast = make(chan domain.Message)
 
@@ -25,7 +26,7 @@ func handleMessages() {
 		
 		// Send it out to every client that is currently connected
 		for client := range clients {
-			log.Printf("msg from client: %v", msg.ContentMessage)
+			log.Printf("msg from client-%v : %v", clients[client].String(), msg.ContentMessage)
 			err := client.WriteJSON(msg)
 			if err != nil {
 				log.Printf("error: %v", err)
@@ -36,7 +37,7 @@ func handleMessages() {
 	}
 }
 
-// init handler for websocket
+// handleConnections init handler for websocket
 func handleConnections(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -45,7 +46,7 @@ func handleConnections(w http.ResponseWriter, r *http.Request, _ httprouter.Para
 	defer ws.Close()
 	
 	// Save new client
-	clients[ws] = true
+	clients[ws] = xid.New()
 	// Set Keep alive (60 minutes)
 	keepAlive(ws, (60 * time.Minute))
 	

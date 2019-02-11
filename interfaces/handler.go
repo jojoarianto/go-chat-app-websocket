@@ -10,7 +10,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-// sentCollectionMsg collection of sent out message
+// sentCollectionMsg is collection of sent message
 var sentCollectionMsg []domain.Message
 
 // Run start server
@@ -35,7 +35,7 @@ func Routes() *httprouter.Router {
 }
 
 func index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	respondWithJson(w, http.StatusOK, "WELCOME TO GO CHAT API")
+	http.ServeFile(w, r, "./static/index.html")
 }
 
 func getSentMessage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -43,6 +43,7 @@ func getSentMessage(w http.ResponseWriter, r *http.Request, _ httprouter.Params)
 }
 
 func sentMessage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	// userRequest format object
 	type userRequest struct {
 		ContentMessage string `json:"content_message"`
 	}
@@ -56,7 +57,7 @@ func sentMessage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 	defer r.Body.Close()
 
-	// Send received message to the broadcast channel
+	// Send  received message to the broadcast channel
 	broadcast <- domain.NewMessage(ureq.ContentMessage)
 
 	msg := domain.NewMessage(ureq.ContentMessage)

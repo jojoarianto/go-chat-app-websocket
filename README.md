@@ -2,7 +2,8 @@
 
 Libraries
 - HttpRouter from github.com/julienschmidt/httprouter
-- GorillaWebsocket from github.com/gorilla/websocket
+- Gorilla Websocket from github.com/gorilla/websocket
+- Globally Unique ID Generator from https://github.com/rs/xid
 
 ### API for sending a message
 

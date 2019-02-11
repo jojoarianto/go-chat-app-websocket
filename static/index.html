@@ -11,9 +11,52 @@
     <title>Go Chat App!</title>
   </head>
   <body>
-    <div class="container">
-        <h1>Starter boostrap</h1>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Simple Chat App</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="form-group">
+            <label for="ioarea">World Message</label>
+            <textarea class="form-control rounded-0" id="ioarea" rows="10" disabled></textarea>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-8">
+                    <input type="text" class="form-control rounded-0" id="inputmsg" placeholder="Message"></input>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" id="sendbtn" onclick="return sendButtonAction()" class="btn btn-primary">Send</button>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        var ws;
+        
+        (function(){
+            ws = new WebSocket("ws://" + location.host + "/ws");
+
+            ws.onmessage = function(evt) {
+                var ioarea = document.getElementById("ioarea");
+                
+                var data = JSON.parse(evt.data);
+                var time = new Date(data.created_at);
+                var st = time.toString()
+                ioarea.value = ioarea.value + "\n" + st + ", " + data.sender + " : " + data.content_message
+            };
+        })();
+
+        function sendButtonAction(){
+            var input = document.getElementById("inputmsg");    
+
+            var data = JSON.stringify({"content_message": input.value});
+            ws.send(data);
+        }
+    </script>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

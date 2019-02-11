@@ -13,7 +13,7 @@ import (
 // initialize the upgrader
 var upgrader = websocket.Upgrader{}
 // collection of connected clients
-var clients = make(map[*websocket.Conn]bool) 
+var clients = make(map[*websocket.Conn] bool) 
 // broadcast channel
 var broadcast = make(chan domain.Message)
 
